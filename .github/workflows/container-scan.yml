@@ -1,0 +1,22 @@
+name: Container Security Scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download container image
+        run: docker pull nginx:1.20
+
+      - name: Scan for vulnerabilities
+        uses: crazy-max/ghaction-container-scan@v4.1.0
+        with:
+          image: nginx:1.20
+          severity: HIGH,CRITICAL
+          severity_threshold: HIGH
+          annotations: true
